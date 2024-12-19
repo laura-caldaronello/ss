@@ -1,0 +1,169 @@
+// Base styles for the page
+html,
+body {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #1d1936; // Dark gray background for a wintery/Christmas vibe
+  font-family: "Nunito", sans-serif;
+  color: #e0e0e0; // Light gray text for contrast
+}
+
+// Default text styles
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #f4f4f4; // Lighter text for headings to ensure good contrast
+  margin-bottom: 0.5rem;
+}
+
+p {
+  color: #e0e0e0; // Light gray for paragraphs to ensure readability
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: #6c757d; // Sober, muted accent color (like a soft teal or gray)
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+a:hover,
+a:focus {
+  color: #c4a300; // Accent color on hover (golden tone)
+  text-decoration: underline;
+}
+
+// Other important elements in the body
+button,
+input,
+select,
+textarea {
+  background-color: #2c2a3d; // Slightly lighter background to differentiate from page background
+  color: #e0e0e0; // Light text for form elements
+  border: 1px solid #6c757d; // Subtle accent border
+  padding: 0.2rem 1rem;
+  font-family: inherit;
+  border-radius: 4px;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+button:hover,
+input:hover,
+select:hover,
+textarea:hover {
+  background-color: #3c3b4b; // Slightly lighter on hover
+  border-color: #c4a300; // Highlight with accent color
+}
+
+// Sober accent color for details
+.details {
+  color: #6c757d; // Muted teal or gray for small detail text
+  font-style: italic;
+}
+
+// For more important details
+.important {
+  color: #c4a300; // Accent color for key details
+  font-weight: bold;
+}
+
+// Placeholder text styling for input fields
+::placeholder {
+  color: #b1b1b1; // Lighter gray for placeholders
+}
+
+// Apply light text color to all elements by default
+* {
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+//modals
+mat-dialog-container {
+  .mat-mdc-dialog-surface {
+    background-color: #2c2a3d !important; /* Dark background for modal */
+    color: #e0e0e0 !important; /* Light text color */
+    border-radius: 8px !important; /* Rounded corners for the modal */
+    padding: 1.5rem !important;
+    max-width: 400px !important; /* Limiting modal width */
+
+    mat-dialog-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .mat-mdc-form-field-type-mat-input {
+        width: 100%;
+        margin-bottom: 1rem;
+
+        mat-label {
+          color: #e0e0e0; /* Light color for label */
+        }
+
+        .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+          background-color: #3c3b4b; /* Dark input field background */
+          color: #fff; /* White text for input */
+          border: 1px solid #4e4b61; /* Border color for input */
+          border-radius: 4px;
+          padding: 0.8rem;
+          font-size: 1rem;
+
+          &::placeholder {
+            color: #b0b0b0; /* Light placeholder text */
+          }
+
+          &:focus {
+            border-color: #c4a300; /* Accent color on focus */
+          }
+        }
+      }
+    }
+
+    mat-dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+
+      .cancel-btn,
+      .ok-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+
+        &:hover {
+          transform: translateY(-2px); /* Hover effect */
+        }
+
+        &.cancel-btn {
+          background-color: #6c757d; /* Muted gray for cancel button */
+          color: #fff;
+
+          &:hover {
+            background-color: #5a636a; /* Darker gray on hover */
+          }
+        }
+
+        &.ok-btn {
+          background-color: #c4a300; /* Accent color for Ok button */
+          color: #fff;
+
+          &:hover {
+            background-color: #b38b00; /* Darker shade on hover */
+          }
+        }
+      }
+    }
+  }
+}

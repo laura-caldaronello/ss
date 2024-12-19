@@ -1,0 +1,49 @@
+<ng-container *ngIf="user">
+  <header class="app-header">
+    <!-- User Info Section -->
+    <div class="header-header">
+      <span class="user-name">{{ user.name }}</span>
+
+      <!-- Sign Out Button -->
+      <button class="sign-out-btn" (click)="signOut()">Sign Out</button>
+    </div>
+
+    <!-- Navigation Buttons Section (below user info and sign out) -->
+    <div class="nav-buttons">
+      <button class="nav-btn" (click)="goBack()" aria-label="Go Back">
+        <mat-icon>arrow_back</mat-icon>
+        <!-- Material Icon for back -->
+      </button>
+      <button
+        class="nav-btn"
+        routerLink="/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        aria-label="Home"
+      >
+        <mat-icon>home</mat-icon>
+        <!-- Material Icon for Home -->
+      </button>
+      <button
+        class="nav-btn"
+        routerLink="/profile"
+        routerLinkActive="active"
+        aria-label="Profile"
+      >
+        <mat-icon>person</mat-icon>
+        <!-- Material Icon for Profile -->
+      </button>
+      <button
+        class="nav-btn"
+        routerLink="/settings"
+        routerLinkActive="active"
+        aria-label="Settings"
+      >
+        <mat-icon>settings</mat-icon>
+        <!-- Material Icon for Settings -->
+      </button>
+    </div>
+  </header>
+
+  <router-outlet></router-outlet>
+</ng-container>

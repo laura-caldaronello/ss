@@ -1,0 +1,18 @@
+<div *ngIf="user" class="group-container">
+  <div class="header">
+    <button class="create-group-btn" (click)="createGroup()">
+      Crea Gruppo
+    </button>
+    <h2>{{ "Gruppi di " + user.name }}</h2>
+  </div>
+
+  <div class="groups-list">
+    <div *ngFor="let group of groups" class="group-item">
+      <span class="group-name">{{ group.name }}</span>
+      <div class="group-actions">
+        <button class="view-btn" (click)="viewGroup(group.id)">Vedi</button>
+        <button class="add-btn" (click)="addUser(group.id)">Aggiungi</button>
+      </div>
+    </div>
+  </div>
+</div>

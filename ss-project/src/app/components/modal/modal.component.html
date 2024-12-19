@@ -1,0 +1,12 @@
+<!-- my-modal.component.html -->
+
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>{{ data.title }}</mat-label>
+    <input matInput [(ngModel)]="name" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annulla</button>
+  <button mat-button cdkFocusInitial [mat-dialog-close]="name()">Ok</button>
+</mat-dialog-actions>

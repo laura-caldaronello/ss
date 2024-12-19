@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  #************Mongo DB***************
+  database_mongo:
+    container_name: mongo_container
+    image: mongodb/mongodb-community-server:5.0-ubuntu2004
+    ports:
+      - 27017:27017
+
+  #************Backend***************
+  backend_spring:
+    container_name: spring_container
+    build:
+      context: ./ss-be
+      dockerfile: Dockerfile
+    ports:
+      - 8030:8030
+    depends_on:
+      - database_mongo
+
+  #************Frontend***************
+  frontend_angular:
+    container_name: angular_container
+    build:
+      context: ./ss-project
+      dockerfile: Dockerfile
+    ports:
+      - 4200:4200
+    environment:
+      - API_URL=http://backend_spring:8030  # Pass the backend URL to the frontend as an environment variable
+    depends_on:
+      - backend_spring
