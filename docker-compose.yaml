@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   #************Mongo DB***************
@@ -15,7 +15,7 @@ services:
       context: ./ss-be
       dockerfile: Dockerfile
     ports:
-      - 8030:8030
+      - 8443:8443
     depends_on:
       - database_mongo
 
@@ -26,8 +26,6 @@ services:
       context: ./ss-project
       dockerfile: Dockerfile
     ports:
-      - 4200:4200
-    environment:
-      - API_URL=http://backend_spring:8030  # Pass the backend URL to the frontend as an environment variable
+      - 443:443
     depends_on:
       - backend_spring

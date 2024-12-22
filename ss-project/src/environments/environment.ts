@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   google_login_client_id:
     '788124741625-ii8q63ahojo2uc6o2j4hpalnsrgd25dc.apps.googleusercontent.com',
-  apiUrl: 'http://localhost:8030',
+  apiUrl: 'http://localhost:8443',
 };
 
 /*

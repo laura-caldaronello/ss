@@ -50,7 +50,6 @@ import { MatIconModule } from '@angular/material/icon';
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
-        autoLogin: true,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,

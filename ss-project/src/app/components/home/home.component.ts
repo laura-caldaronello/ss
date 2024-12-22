@@ -14,12 +14,23 @@ export class HomeComponent {
   constructor(private authService: SocialAuthService, private router: Router) {}
 
   ngOnInit() {
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = user != null;
+    const sessionUser = JSON.parse(sessionStorage.getItem('user') as string);
+    if (!this.user && sessionUser) {
+      this.user = sessionUser;
+      this.loggedIn = sessionUser != null;
       if (this.loggedIn) {
+        sessionStorage.setItem('user', JSON.stringify(sessionUser));
         this.router.navigate(['/user/overview']);
       }
-    });
+    } else {
+      this.authService.authState.subscribe((user) => {
+        this.user = user;
+        this.loggedIn = user != null;
+        if (this.loggedIn) {
+          sessionStorage.setItem('user', JSON.stringify(user));
+          this.router.navigate(['/user/overview']);
+        }
+      });
+    }
   }
 }

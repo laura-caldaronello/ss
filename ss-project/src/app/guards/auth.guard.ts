@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,16 +17,13 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean> {
-    return this.authService.authState.pipe(
-      map((user) => {
-        if (user != null) {
-          return true;
-        } else {
-          this.router.navigate(['']);
-          return false;
-        }
-      })
-    );
+  ): boolean {
+    const sessionUser = JSON.parse(sessionStorage.getItem('user') as string);
+    if (sessionUser) {
+      return true;
+    } else {
+      this.router.navigate(['']);
+      return false;
+    }
   }
 }

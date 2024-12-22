@@ -18,9 +18,14 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-    });
+    const sessionUser = JSON.parse(sessionStorage.getItem('user') as string);
+    if (!this.user && sessionUser) {
+      this.user = sessionUser;
+    } else {
+      this.authService.authState.subscribe((user) => {
+        this.user = user;
+      });
+    }
   }
 
   goBack() {
@@ -28,6 +33,7 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut(): void {
+    sessionStorage.removeItem('user');
     this.authService.signOut();
     this.router.navigate(['']);
   }

@@ -27,27 +27,54 @@ export class UserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = user != null;
+    const sessionUser = JSON.parse(sessionStorage.getItem('user') as string);
+    if (!this.user && sessionUser) {
+      this.user = sessionUser;
+      this.loggedIn = sessionUser != null;
       if (this.loggedIn) {
-        this.userService.getUser(user.email).subscribe((savedUser: User) => {
-          if (!savedUser) {
-            this.userService.setUser(user).subscribe((createdUser: User) => {
-              console.log('createdUser: ', createdUser);
-            });
-          } else {
-            console.log('savedUser: ', savedUser);
-            this.groupService
-              .getGroupsForUser(savedUser.email)
-              .subscribe((groups: Group[]) => {
-                this.groups = groups;
-                console.log('groups', groups);
-              });
-          }
-        });
+        this.userService
+          .getUser(sessionUser.email)
+          .subscribe((savedUser: User) => {
+            if (!savedUser) {
+              this.userService
+                .setUser(sessionUser)
+                .subscribe((createdUser: User) => {
+                  console.log('createdUser: ', createdUser);
+                });
+            } else {
+              console.log('savedUser: ', savedUser);
+              this.groupService
+                .getGroupsForUser(savedUser.email)
+                .subscribe((groups: Group[]) => {
+                  this.groups = groups;
+                  console.log('groups', groups);
+                });
+            }
+          });
       }
-    });
+    } else {
+      this.authService.authState.subscribe((user) => {
+        this.user = user;
+        this.loggedIn = user != null;
+        if (this.loggedIn) {
+          this.userService.getUser(user.email).subscribe((savedUser: User) => {
+            if (!savedUser) {
+              this.userService.setUser(user).subscribe((createdUser: User) => {
+                console.log('createdUser: ', createdUser);
+              });
+            } else {
+              console.log('savedUser: ', savedUser);
+              this.groupService
+                .getGroupsForUser(savedUser.email)
+                .subscribe((groups: Group[]) => {
+                  this.groups = groups;
+                  console.log('groups', groups);
+                });
+            }
+          });
+        }
+      });
+    }
   }
 
   createGroup() {
