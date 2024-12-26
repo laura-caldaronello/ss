@@ -1,0 +1,21 @@
+name: Deploy Certificate and Key Files
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up certificate and key files
+      run: |
+        echo "${{ secrets.SERVER_CRT }}" > ss-project/my-cert.crt
+        echo "${{ secrets.SERVER_CRT }}" > ss-be/src/main/resources/server.crt
+        echo "${{ secrets.SERVER_KEY }}" > ss-project/my-cert.key
+        echo "${{ secrets.SERVER_KEY }}" > ss-be/src/main/resources/server.key
