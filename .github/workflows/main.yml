@@ -22,6 +22,7 @@ jobs:
 
     - name: Set up SSH private key for OVH access
       run: |
+        mkdir -p ~/.ssh
         echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
