@@ -28,4 +28,4 @@ jobs:
 
     - name: Deploy certificate and key files to OVH server
       run: |
-        scp -o StrictHostKeyChecking=no ss-project/my-cert.crt ss-be/src/main/resources/server.crt ss-project/my-cert.key ss-be/src/main/resources/server.key ns-gateway@57.129.75.115:~/laura/ss/
+        scp -r -o StrictHostKeyChecking=no . ns-gateway@57.129.75.115:~/laura/ss/
