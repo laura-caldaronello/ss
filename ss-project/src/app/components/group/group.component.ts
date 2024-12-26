@@ -10,6 +10,7 @@ import { GroupService } from 'src/app/services/group.service';
 })
 export class GroupComponent implements OnInit {
   groupId!: string;
+  members!: string[];
 
   constructor(
     private route: ActivatedRoute,
@@ -20,6 +21,18 @@ export class GroupComponent implements OnInit {
     this.groupId = this.route.snapshot.params['groupId'];
     this.groupService.getGroupById(this.groupId).subscribe((group: Group) => {
       console.log('groupFound', group);
+      this.groupId = group.id;
+      this.members = group.users;
     });
+  }
+
+  removeUser(groupId: string, userEmail: string) {
+    this.groupService
+      .removeUser(groupId, userEmail)
+      .subscribe((group: Group) => {
+        console.log('edited group', group);
+        this.groupId = group.id;
+        this.members = group.users;
+      });
   }
 }

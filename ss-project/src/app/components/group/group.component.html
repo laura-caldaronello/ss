@@ -1,1 +1,14 @@
-<p>group works!</p>
+<div class="members-list">
+  @for (member of members; track member) {
+  <div class="member-item">
+    <span class="member-name">{{ member }}</span>
+    <div class="member-actions">
+      <button class="add-btn" (click)="removeUser(groupId, member)">
+        Elimina
+      </button>
+    </div>
+  </div>
+  } @empty {
+  <div>There are no members.</div>
+  }
+</div>

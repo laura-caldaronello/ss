@@ -17,7 +17,8 @@ export class UserComponent implements OnInit {
   user!: SocialUser;
   loggedIn!: boolean;
   readonly dialog = inject(MatDialog);
-  groups: Group[] = [];
+  createdGroups: Group[] = [];
+  memberGroups: Group[] = [];
 
   constructor(
     private userService: UserService,
@@ -29,49 +30,37 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     const sessionUser = JSON.parse(sessionStorage.getItem('user') as string);
     if (!this.user && sessionUser) {
-      this.user = sessionUser;
-      this.loggedIn = sessionUser != null;
-      if (this.loggedIn) {
-        this.userService
-          .getUser(sessionUser.email)
-          .subscribe((savedUser: User) => {
-            if (!savedUser) {
-              this.userService
-                .setUser(sessionUser)
-                .subscribe((createdUser: User) => {
-                  console.log('createdUser: ', createdUser);
-                });
-            } else {
-              console.log('savedUser: ', savedUser);
-              this.groupService
-                .getGroupsForUser(savedUser.email)
-                .subscribe((groups: Group[]) => {
-                  this.groups = groups;
-                  console.log('groups', groups);
-                });
-            }
-          });
-      }
+      this.getGroups(sessionUser);
     } else {
       this.authService.authState.subscribe((user) => {
-        this.user = user;
-        this.loggedIn = user != null;
-        if (this.loggedIn) {
-          this.userService.getUser(user.email).subscribe((savedUser: User) => {
-            if (!savedUser) {
-              this.userService.setUser(user).subscribe((createdUser: User) => {
-                console.log('createdUser: ', createdUser);
-              });
-            } else {
-              console.log('savedUser: ', savedUser);
-              this.groupService
-                .getGroupsForUser(savedUser.email)
-                .subscribe((groups: Group[]) => {
-                  this.groups = groups;
-                  console.log('groups', groups);
-                });
-            }
+        this.getGroups(user);
+      });
+    }
+  }
+
+  getGroups(user: SocialUser) {
+    this.user = user;
+    this.loggedIn = user != null;
+    if (this.loggedIn) {
+      this.userService.getUser(user.email).subscribe((savedUser: User) => {
+        if (!savedUser) {
+          this.userService.setUser(user).subscribe((createdUser: User) => {
+            console.log('createdUser: ', createdUser);
           });
+        } else {
+          console.log('savedUser: ', savedUser);
+          this.groupService
+            .getCreatedGroupsForUser(savedUser.email)
+            .subscribe((createdGroups: Group[]) => {
+              this.createdGroups = createdGroups;
+              console.log('createdGroups', createdGroups);
+            });
+          this.groupService
+            .getMemberGroupsForUser(savedUser.email)
+            .subscribe((memberGroups: Group[]) => {
+              this.memberGroups = memberGroups;
+              console.log('memberGroups', memberGroups);
+            });
         }
       });
     }

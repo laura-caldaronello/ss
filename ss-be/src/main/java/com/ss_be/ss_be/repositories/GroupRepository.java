@@ -10,6 +10,9 @@ public interface GroupRepository extends MongoRepository<Group, String> {
     @Query("{ 'createdBy' : ?0 }")
     List<Group> findGroupsByCreatedBy(String createdBy);
 
+    @Query("{ 'users': ?0 }")
+    List<Group> findGroupsByMember(String member);
+
     @Query("{ 'name' : ?0 }")
     List<Group> findGroupsByName(String name);
 }

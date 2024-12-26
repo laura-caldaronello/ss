@@ -7,7 +7,23 @@
   </div>
 
   <div class="groups-list">
-    <div *ngFor="let group of groups" class="group-item">
+    <div *ngFor="let group of createdGroups" class="group-item">
+      <span class="group-name">{{ group.name }}</span>
+      <div class="group-actions">
+        <button class="view-btn" (click)="viewGroup(group.id)">Vedi</button>
+        <button class="add-btn" (click)="addUser(group.id)">Aggiungi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="user" class="group-container">
+  <div class="header">
+    <h2>{{ "Gruppi di cui " + user.name + " fa parte" }}</h2>
+  </div>
+
+  <div class="groups-list">
+    <div *ngFor="let group of memberGroups" class="group-item">
       <span class="group-name">{{ group.name }}</span>
       <div class="group-actions">
         <button class="view-btn" (click)="viewGroup(group.id)">Vedi</button>

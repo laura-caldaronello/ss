@@ -14,11 +14,23 @@ public class GroupController {
     @Autowired
     GroupRepository groupRespository;
 
-    @GetMapping("/{createdBy}/groups")
-    ResponseEntity<List<Group>> getGroupsForUser(
+    @GetMapping("/{createdBy}/createdgroups")
+    ResponseEntity<List<Group>> getCreatedGroupsForUser(
             @PathVariable String createdBy
     ) {
         List<Group> groupsFound = groupRespository.findGroupsByCreatedBy(createdBy);
+        if (!groupsFound.isEmpty()) {
+            return ResponseEntity.ok(groupsFound);
+        } else {
+            return ResponseEntity.ok(null);
+        }
+    }
+
+    @GetMapping("/{createdBy}/membergroups")
+    ResponseEntity<List<Group>> getMemberGroupsForUser(
+            @PathVariable String member
+    ) {
+        List<Group> groupsFound = groupRespository.findGroupsByMember(member);
         if (!groupsFound.isEmpty()) {
             return ResponseEntity.ok(groupsFound);
         } else {
@@ -66,6 +78,23 @@ public class GroupController {
         }
         usersList.add(userEmail);
         group.setUsers(usersList);
+        groupRespository.save(group);
+        return ResponseEntity.ok(group);
+    }
+
+    @PutMapping("/group/removeuser/{groupId}/{userEmail}")
+    ResponseEntity<Group> removeUser(
+            @PathVariable String groupId,
+            @PathVariable String userEmail
+    ) {
+        Group group = groupRespository.findById(groupId).get();
+        List<String> usersList = group.getUsers();
+        if (usersList == null) {
+            usersList = new ArrayList<String>();
+        }
+        usersList.remove(userEmail);
+        group.setUsers(usersList);
+        groupRespository.save(group);
         return ResponseEntity.ok(group);
     }
 }

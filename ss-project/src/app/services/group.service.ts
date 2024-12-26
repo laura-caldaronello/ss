@@ -13,8 +13,12 @@ const apiUrl = environment.apiUrl;
 export class GroupService {
   constructor(private http: HttpClient) {}
 
-  getGroupsForUser(email: string): Observable<Group[]> {
-    return this.http.get<Group[]>(`${apiUrl}/` + email + `/groups`);
+  getCreatedGroupsForUser(email: string): Observable<Group[]> {
+    return this.http.get<Group[]>(`${apiUrl}/` + email + `/createdgroups`);
+  }
+
+  getMemberGroupsForUser(email: string): Observable<Group[]> {
+    return this.http.get<Group[]>(`${apiUrl}/` + email + `/membergroups`);
   }
 
   getGroupsByName(name: string): Observable<Group[]> {
@@ -35,6 +39,13 @@ export class GroupService {
   addUser(groupId: string, userEmail: string): Observable<Group> {
     return this.http.put<Group>(
       `${apiUrl}/group/adduser/` + groupId + `/` + userEmail,
+      null
+    );
+  }
+
+  removeUser(groupId: string, userEmail: string): Observable<Group> {
+    return this.http.put<Group>(
+      `${apiUrl}/group/removeuser/` + groupId + `/` + userEmail,
       null
     );
   }
