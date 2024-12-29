@@ -54,20 +54,13 @@ export class UserComponent implements OnInit {
           combineLatest([
             this.groupService.getCreatedGroupsForUser(savedUser.email),
             this.groupService.getMemberGroupsForUser(savedUser.email),
-          ])
-            .pipe(
-              catchError((err) => {
-                console.log(err);
-                return [];
-              })
-            )
-            .subscribe(([createdGroups, memberGroups]) => {
-              this.createdGroups = createdGroups;
-              console.log('createdGroups', createdGroups);
-              this.memberGroups = memberGroups;
-              console.log('memberGroups', memberGroups);
-              this.groups = [...this.createdGroups, ...this.memberGroups];
-            });
+          ]).subscribe(([createdGroups, memberGroups]) => {
+            this.createdGroups = createdGroups ? createdGroups : [];
+            console.log('createdGroups', this.createdGroups);
+            this.memberGroups = memberGroups ? memberGroups : [];
+            console.log('memberGroups', this.memberGroups);
+            this.groups = [...this.createdGroups, ...this.memberGroups];
+          });
         }
       });
     }
