@@ -90,6 +90,12 @@ export class UserComponent implements OnInit {
     });
   }
 
+  deleteGroup(groupId: string) {
+    this.groupService.deleteGroup(groupId).subscribe(() => {
+      this.getGroups(this.user);
+    });
+  }
+
   viewGroup(groupId: string) {
     this.router.navigate(['/user/group/' + groupId]);
   }

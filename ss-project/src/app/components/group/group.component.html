@@ -21,7 +21,7 @@
           *ngIf="
             member.email != createdBy && user.email == createdBy && !sorting
           "
-          class="add-btn"
+          class="remove-btn"
           (click)="removeUser(member.email)"
         >
           <mat-icon>delete</mat-icon>

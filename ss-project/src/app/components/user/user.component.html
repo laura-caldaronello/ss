@@ -12,6 +12,13 @@
         <mat-icon *ngIf="group.createdBy == user.email">star</mat-icon>
       </div>
       <div class="group-actions">
+        <button
+          *ngIf="group.createdBy == user.email"
+          class="delete-btn"
+          (click)="deleteGroup(group.id)"
+        >
+          <mat-icon> delete </mat-icon>
+        </button>
         <button class="view-btn" (click)="viewGroup(group.id)">
           <mat-icon> arrow_forward </mat-icon>
         </button>

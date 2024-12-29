@@ -66,6 +66,14 @@ public class GroupController {
         return ResponseEntity.ok(groupCreated);
     }
 
+    @DeleteMapping("/group/{groupId}")
+    ResponseEntity<Group> deleteGroup(
+            @PathVariable String groupId
+    ) {
+       groupRespository.deleteById(groupId);
+       return ResponseEntity.ok(null);
+    }
+
     @PutMapping("/group/adduser/{groupId}/{userEmail}")
     ResponseEntity<Group> addUser(
             @PathVariable String groupId,
