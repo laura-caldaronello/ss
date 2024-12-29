@@ -75,7 +75,7 @@ export class UserComponent implements OnInit {
 
   createGroup() {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: { title: 'nome del gruppo' },
+      data: { title: 'nome del gruppo', validators: [] },
     });
 
     dialogRef.afterClosed().subscribe((name) => {
