@@ -1,12 +1,26 @@
-<!-- my-modal.component.html -->
-
 <mat-dialog-content>
-  <mat-form-field>
-    <mat-label>{{ data.title }}</mat-label>
-    <input matInput [(ngModel)]="name" />
-  </mat-form-field>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>{{ data.title }}</mat-label>
+      <input matInput formControlName="control" />
+      <!-- Display custom error message if the validator finds an error -->
+      <small *ngIf="control?.hasError('forbidden')">
+        L'e-mail è già presente nella lista
+      </small>
+      <small *ngIf="control?.hasError('email')"
+        >Indirizzo e-mail non valido</small
+      >
+    </mat-form-field>
+  </form>
 </mat-dialog-content>
+
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Annulla</button>
-  <button mat-button cdkFocusInitial [mat-dialog-close]="name()">Ok</button>
+  <button
+    mat-button
+    cdkFocusInitial
+    [disabled]="form.invalid"
+    (click)="closeDialog()"
+  >
+    Ok
+  </button>
 </mat-dialog-actions>

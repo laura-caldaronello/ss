@@ -7,6 +7,7 @@ import { ModalComponent } from '../modal/modal.component';
 import { GroupService } from 'src/app/services/group.service';
 import { Group } from '../../models/group.model';
 import { User } from 'src/app/models/user.model';
+import { catchError, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -17,6 +18,7 @@ export class UserComponent implements OnInit {
   user!: SocialUser;
   loggedIn!: boolean;
   readonly dialog = inject(MatDialog);
+  groups: Group[] = [];
   createdGroups: Group[] = [];
   memberGroups: Group[] = [];
 
@@ -49,17 +51,22 @@ export class UserComponent implements OnInit {
           });
         } else {
           console.log('savedUser: ', savedUser);
-          this.groupService
-            .getCreatedGroupsForUser(savedUser.email)
-            .subscribe((createdGroups: Group[]) => {
+          combineLatest([
+            this.groupService.getCreatedGroupsForUser(savedUser.email),
+            this.groupService.getMemberGroupsForUser(savedUser.email),
+          ])
+            .pipe(
+              catchError((err) => {
+                console.log(err);
+                return [];
+              })
+            )
+            .subscribe(([createdGroups, memberGroups]) => {
               this.createdGroups = createdGroups;
               console.log('createdGroups', createdGroups);
-            });
-          this.groupService
-            .getMemberGroupsForUser(savedUser.email)
-            .subscribe((memberGroups: Group[]) => {
               this.memberGroups = memberGroups;
               console.log('memberGroups', memberGroups);
+              this.groups = [...this.createdGroups, ...this.memberGroups];
             });
         }
       });
@@ -77,22 +84,7 @@ export class UserComponent implements OnInit {
           .createGroup(name, this.user)
           .subscribe((createdGroup) => {
             console.log('createdGroup', createdGroup);
-          });
-      }
-    });
-  }
-
-  addUser(groupId: string) {
-    const dialogRef = this.dialog.open(ModalComponent, {
-      data: { title: 'nome del malcapitato' },
-    });
-
-    dialogRef.afterClosed().subscribe((userEmail) => {
-      if (userEmail !== undefined && userEmail !== '') {
-        this.groupService
-          .addUser(groupId, userEmail)
-          .subscribe((group: Group) => {
-            console.log('edited group', group);
+            this.getGroups(this.user);
           });
       }
     });

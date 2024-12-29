@@ -3,31 +3,18 @@
     <button class="create-group-btn" (click)="createGroup()">
       Crea Gruppo
     </button>
-    <h2>{{ "Gruppi di " + user.name }}</h2>
   </div>
 
   <div class="groups-list">
-    <div *ngFor="let group of createdGroups" class="group-item">
-      <span class="group-name">{{ group.name }}</span>
-      <div class="group-actions">
-        <button class="view-btn" (click)="viewGroup(group.id)">Vedi</button>
-        <button class="add-btn" (click)="addUser(group.id)">Aggiungi</button>
+    <div *ngFor="let group of groups" class="group-item">
+      <div class="group-name">
+        <span>{{ group.name }}</span>
+        <mat-icon *ngIf="group.createdBy == user.email">star</mat-icon>
       </div>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="user" class="group-container">
-  <div class="header">
-    <h2>{{ "Gruppi di cui " + user.name + " fa parte" }}</h2>
-  </div>
-
-  <div class="groups-list">
-    <div *ngFor="let group of memberGroups" class="group-item">
-      <span class="group-name">{{ group.name }}</span>
       <div class="group-actions">
-        <button class="view-btn" (click)="viewGroup(group.id)">Vedi</button>
-        <button class="add-btn" (click)="addUser(group.id)">Aggiungi</button>
+        <button class="view-btn" (click)="viewGroup(group.id)">
+          <mat-icon> arrow_forward </mat-icon>
+        </button>
       </div>
     </div>
   </div>

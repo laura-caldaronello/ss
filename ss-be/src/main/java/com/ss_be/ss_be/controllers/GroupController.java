@@ -26,7 +26,7 @@ public class GroupController {
         }
     }
 
-    @GetMapping("/{createdBy}/membergroups")
+    @GetMapping("/{member}/membergroups")
     ResponseEntity<List<Group>> getMemberGroupsForUser(
             @PathVariable String member
     ) {

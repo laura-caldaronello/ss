@@ -1,14 +1,44 @@
-<div class="members-list">
-  @for (member of members; track member) {
-  <div class="member-item">
-    <span class="member-name">{{ member }}</span>
-    <div class="member-actions">
-      <button class="add-btn" (click)="removeUser(groupId, member)">
-        Elimina
-      </button>
-    </div>
+<div *ngIf="user" class="member-container members-list">
+  <h5>{{ groupName }}</h5>
+
+  <div *ngIf="user.email == createdBy" class="header">
+    <button class="create-member-btn" (click)="addUser()">Aggiungi</button>
+    <button class="sort-btn" (click)="sort()">Estrai</button>
   </div>
-  } @empty {
-  <div>There are no members.</div>
-  }
+
+  <ng-container *ngFor="let member of members">
+    <div class="member-item">
+      <div class="member-name">
+        <span>{{
+          member.firstName.length > 0
+            ? member.firstName + " " + member.lastName
+            : member.email
+        }}</span>
+        <mat-icon *ngIf="createdBy == member.email">star</mat-icon>
+      </div>
+      <div class="member-actions">
+        <button
+          *ngIf="
+            member.email != createdBy && user.email == createdBy && !sorting
+          "
+          class="add-btn"
+          (click)="removeUser(member.email)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div
+      *ngIf="user.email == createdBy && sorting"
+      class="arrow-down-container"
+    >
+      <mat-icon>arrow_downward</mat-icon>
+    </div>
+  </ng-container>
+
+  <div *ngIf="user.email == createdBy && sorting" class="footer">
+    <button class="confirm-btn" (click)="confirmSorting()">
+      Conferma estrazione
+    </button>
+  </div>
 </div>
