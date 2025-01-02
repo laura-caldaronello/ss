@@ -34,3 +34,10 @@ services:
 
 volumes:
   mongo_data:
+#copiare volume in cartella backup
+#docker run --rm -v ss_mongo_data:/data/db -v $(pwd)/backup/mydir:/backup alpine tar czf /backup/mongo_backup.tar.gz -C /data/db .
+#cancellare volume ss_mongo_data
+#ricreare volume ss_mongo_data
+#copiare volume backup nel volume creato
+#docker run --rm -v ss_mongo_data:/data/db -v $(pwd)/backup/mydir:/backup alpine tar xzf /backup/mongo_backup.tar.gz -C /data/db
+
