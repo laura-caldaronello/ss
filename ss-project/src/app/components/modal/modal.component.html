@@ -1,5 +1,5 @@
 <mat-dialog-content>
-  <form [formGroup]="form">
+  <form [formGroup]="form" *ngIf="data.type == 'input'">
     <mat-form-field>
       <mat-label>{{ data.title }}</mat-label>
       <input matInput formControlName="control" />
@@ -12,10 +12,30 @@
       >
     </mat-form-field>
   </form>
+  <p *ngIf="data.type == 'warning'">{{ data.title }}</p>
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button
+    *ngIf="data.type == 'warning'"
+    mat-button
+    cdkFocusInitial
+    [disabled]="form.invalid"
+    mat-dialog-close
+  >
+    Annulla
+  </button>
+  <button
+    *ngIf="data.type == 'warning'"
+    mat-button
+    cdkFocusInitial
+    [disabled]="form.invalid"
+    mat-dialog-close="true"
+  >
+    Prosegui
+  </button>
+  <button
+    *ngIf="data.type == 'input'"
     mat-button
     cdkFocusInitial
     [disabled]="form.invalid"

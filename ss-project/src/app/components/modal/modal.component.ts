@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 interface DialogData {
   title: string;
   validators: Validators[];
+  type: 'input' | 'warning';
 }
 
 @Component({

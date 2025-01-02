@@ -3,4 +3,5 @@ export interface Group {
   name: string;
   createdBy: string;
   users: string[];
+  sorted: boolean;
 }

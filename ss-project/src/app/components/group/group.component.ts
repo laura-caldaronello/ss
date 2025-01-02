@@ -22,7 +22,8 @@ export class GroupComponent implements OnInit {
   createdBy!: string;
   members: User[] = [];
   readonly dialog = inject(MatDialog);
-  sorting: boolean = false;
+  sorted: boolean = false;
+  myUser!: User;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,7 +52,12 @@ export class GroupComponent implements OnInit {
       this.groupId = group.id;
       this.createdBy = group.createdBy;
       this.groupName = group.name;
-      [this.createdBy, ...group.users].forEach((member) => {
+      this.sorted = group.sorted;
+
+      const arrayToCycle = group.users
+        ? [this.createdBy, ...group.users]
+        : [this.createdBy];
+      arrayToCycle.forEach((member) => {
         this.userService.getUser(member).subscribe((user) => {
           this.members.push({
             email: user?.email || member,
@@ -60,12 +66,27 @@ export class GroupComponent implements OnInit {
           });
         });
       });
+
+      if (this.sorted) {
+        this.groupService
+          .getMyUser(this.groupId, this.user.idToken)
+          .subscribe((resp) => {
+            this.userService.getUser(resp).subscribe((user) => {
+              this.myUser = {
+                email: user?.email || resp,
+                firstName: user?.firstName || '',
+                lastName: user?.lastName || '',
+              };
+            });
+          });
+      }
     });
   }
 
   addUser() {
     const dialogRef = this.dialog.open(ModalComponent, {
       data: {
+        type: 'input',
         title: 'nome del malcapitato',
         validators: [
           Validators.email,
@@ -101,25 +122,21 @@ export class GroupComponent implements OnInit {
   }
 
   sort() {
-    this.sorting = true;
+    const dialogRef = this.dialog.open(ModalComponent, {
+      data: {
+        type: 'warning',
+        title: 'Sei sicur*? Il gruppo non sarà pù modificabile o cancellabile',
+        validators: [],
+      },
+    });
 
-    let currentIndex = this.members.length;
-
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-      // Pick a remaining element...
-      let randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [this.members[currentIndex], this.members[randomIndex]] = [
-        this.members[randomIndex],
-        this.members[currentIndex],
-      ];
-    }
-
-    console.log(this.members);
+    dialogRef.afterClosed().subscribe((name) => {
+      if (name !== undefined && name !== '') {
+        this.groupService.sortGroup(this.groupId).subscribe((resp) => {
+          this.members = [];
+          this.getGroup();
+        });
+      }
+    });
   }
-
-  confirmSorting() {}
 }

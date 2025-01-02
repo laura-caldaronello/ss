@@ -53,4 +53,17 @@ export class GroupService {
       null
     );
   }
+
+  sortGroup(groupId: string): Observable<string> {
+    return this.http.post<string>(`${apiUrl}/group/${groupId}/sort`, {});
+  }
+
+  getMyUser(groupId: string, userToken: string): Observable<string> {
+    return this.http.get(`${apiUrl}/group/${groupId}/myuser`, {
+      headers: {
+        userToken: userToken,
+      },
+      responseType: 'text',
+    });
+  }
 }

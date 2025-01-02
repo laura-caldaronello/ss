@@ -1,11 +1,27 @@
 <div *ngIf="user" class="member-container members-list">
   <h5>{{ groupName }}</h5>
 
-  <div *ngIf="user.email == createdBy" class="header">
+  <div *ngIf="user.email == createdBy && !sorted" class="header">
     <button class="create-member-btn" (click)="addUser()">Aggiungi</button>
-    <button class="sort-btn" (click)="sort()">Estrai</button>
+    <button [disabled]="members.length < 3" class="sort-btn" (click)="sort()">
+      Estrai
+    </button>
   </div>
 
+  <ng-container *ngIf="sorted && myUser">
+    <p>Dovrai fare il regalo a:</p>
+    <div class="member-item">
+      <div class="member-name">
+        <span>{{
+          myUser.firstName.length > 0
+            ? myUser.firstName + " " + myUser.lastName
+            : myUser.email
+        }}</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <p>Membri del gruppo:</p>
   <ng-container *ngFor="let member of members">
     <div class="member-item">
       <div class="member-name">
@@ -19,7 +35,7 @@
       <div class="member-actions">
         <button
           *ngIf="
-            member.email != createdBy && user.email == createdBy && !sorting
+            member.email != createdBy && user.email == createdBy && !sorted
           "
           class="remove-btn"
           (click)="removeUser(member.email)"
@@ -28,17 +44,5 @@
         </button>
       </div>
     </div>
-    <div
-      *ngIf="user.email == createdBy && sorting"
-      class="arrow-down-container"
-    >
-      <mat-icon>arrow_downward</mat-icon>
-    </div>
   </ng-container>
-
-  <div *ngIf="user.email == createdBy && sorting" class="footer">
-    <button class="confirm-btn" (click)="confirmSorting()">
-      Conferma estrazione
-    </button>
-  </div>
 </div>

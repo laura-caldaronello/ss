@@ -15,12 +15,15 @@ java {
 
 repositories {
 	mavenCentral()
+	google()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	implementation group: 'com.google.api-client', name: 'google-api-client', version: '1.35.2'
+	implementation 'com.google.http-client:google-http-client-gson'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
