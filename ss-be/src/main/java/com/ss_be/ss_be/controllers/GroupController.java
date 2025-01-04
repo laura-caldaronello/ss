@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -116,7 +117,7 @@ public class GroupController {
     ResponseEntity<String> sortGroup(
             @PathVariable String groupId) {
         Group groupFound = groupRespository.findById(groupId).get();
-        List<String> users = groupFound.getUsers();
+        List<String> users = new ArrayList<String>(groupFound.getUsers());
         users.add(groupFound.getCreatedBy());
         List<String> sortedUsers = groupService.sort(users);
         Sorting sorting = new Sorting(groupId, sortedUsers);
