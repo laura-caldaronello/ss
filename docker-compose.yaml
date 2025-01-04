@@ -8,6 +8,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: gifts
       MONGO_INITDB_ROOT_PASSWORD: gifts
+      MONGO_INITDB_BIND_IP: 0.0.0.0
     ports:
       - 27017:27017
     volumes:
