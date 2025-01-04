@@ -32,15 +32,15 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     const sessionUser = JSON.parse(sessionStorage.getItem('user') as string);
     if (!this.user && sessionUser) {
-      this.getGroups(sessionUser);
+      this.getUser(sessionUser);
     } else {
       this.authService.authState.subscribe((user) => {
-        this.getGroups(user);
+        this.getUser(user);
       });
     }
   }
 
-  getGroups(user: SocialUser) {
+  getUser(user: SocialUser) {
     this.user = user;
     this.loggedIn = user != null;
     if (this.loggedIn) {
@@ -48,22 +48,27 @@ export class UserComponent implements OnInit {
         if (!savedUser) {
           this.userService.setUser(user).subscribe((createdUser: User) => {
             console.log('createdUser: ', createdUser);
+            this.getGroups(createdUser);
           });
         } else {
           console.log('savedUser: ', savedUser);
-          combineLatest([
-            this.groupService.getCreatedGroupsForUser(savedUser.email),
-            this.groupService.getMemberGroupsForUser(savedUser.email),
-          ]).subscribe(([createdGroups, memberGroups]) => {
-            this.createdGroups = createdGroups ? createdGroups : [];
-            console.log('createdGroups', this.createdGroups);
-            this.memberGroups = memberGroups ? memberGroups : [];
-            console.log('memberGroups', this.memberGroups);
-            this.groups = [...this.createdGroups, ...this.memberGroups];
-          });
+          this.getGroups(savedUser);
         }
       });
     }
+  }
+
+  getGroups(user: User) {
+    combineLatest([
+      this.groupService.getCreatedGroupsForUser(user.email),
+      this.groupService.getMemberGroupsForUser(user.email),
+    ]).subscribe(([createdGroups, memberGroups]) => {
+      this.createdGroups = createdGroups ? createdGroups : [];
+      console.log('createdGroups', this.createdGroups);
+      this.memberGroups = memberGroups ? memberGroups : [];
+      console.log('memberGroups', this.memberGroups);
+      this.groups = [...this.createdGroups, ...this.memberGroups];
+    });
   }
 
   createGroup() {
@@ -77,7 +82,7 @@ export class UserComponent implements OnInit {
           .createGroup(name, this.user)
           .subscribe((createdGroup) => {
             console.log('createdGroup', createdGroup);
-            this.getGroups(this.user);
+            this.getUser(this.user);
           });
       }
     });
@@ -85,7 +90,7 @@ export class UserComponent implements OnInit {
 
   deleteGroup(groupId: string) {
     this.groupService.deleteGroup(groupId).subscribe(() => {
-      this.getGroups(this.user);
+      this.getUser(this.user);
     });
   }
 
