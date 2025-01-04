@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -79,7 +78,13 @@ public class GroupController {
     @DeleteMapping("/group/{groupId}")
     ResponseEntity<Group> deleteGroup(
             @PathVariable String groupId) {
+        Group group = groupRespository.findById(groupId).get();
+        if (group.getSorted()) {
+            Sorting sorting = sortingRepository.findSortingByGroupId(groupId);
+            sortingRepository.deleteById(sorting.getId());
+        }
         groupRespository.deleteById(groupId);
+
         return ResponseEntity.ok(null);
     }
 

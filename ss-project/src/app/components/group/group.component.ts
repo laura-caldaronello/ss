@@ -130,8 +130,8 @@ export class GroupComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((name) => {
-      if (name !== undefined && name !== '') {
+    dialogRef.afterClosed().subscribe((resp) => {
+      if (resp !== undefined && resp !== '') {
         this.groupService.sortGroup(this.groupId).subscribe((resp) => {
           this.members = [];
           this.getGroup();

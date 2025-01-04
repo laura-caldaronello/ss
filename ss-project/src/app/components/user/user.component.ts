@@ -1,5 +1,5 @@
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { Component, inject, model, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,7 +7,7 @@ import { ModalComponent } from '../modal/modal.component';
 import { GroupService } from 'src/app/services/group.service';
 import { Group } from '../../models/group.model';
 import { User } from 'src/app/models/user.model';
-import { catchError, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -89,8 +89,20 @@ export class UserComponent implements OnInit {
   }
 
   deleteGroup(groupId: string) {
-    this.groupService.deleteGroup(groupId).subscribe(() => {
-      this.getUser(this.user);
+    const dialogRef = this.dialog.open(ModalComponent, {
+      data: {
+        type: 'warning',
+        title: 'Sei sicur*? Perderai tutte le informazioni relative al gruppo',
+        validators: [],
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((resp) => {
+      if (resp !== undefined && resp !== '') {
+        this.groupService.deleteGroup(groupId).subscribe(() => {
+          this.getUser(this.user);
+        });
+      }
     });
   }
 
