@@ -4,7 +4,6 @@ services:
   #************Mongo DB***************
   database_mongo:
     container_name: mongo_container
-    network_mode: host
     image: mongodb/mongodb-community-server:5.0-ubuntu2004
     environment:
       MONGO_INITDB_ROOT_USERNAME: gifts
