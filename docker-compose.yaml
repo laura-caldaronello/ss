@@ -5,6 +5,9 @@ services:
   database_mongo:
     container_name: mongo_container
     image: mongodb/mongodb-community-server:5.0-ubuntu2004
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: gifts
+      MONGO_INITDB_ROOT_PASSWORD: gifts
     ports:
       - 27017:27017
     volumes:
